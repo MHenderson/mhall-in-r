@@ -10,17 +10,21 @@ library(tidygraph)
 # . . .
 # . . .
 
+## Input
+
 l_order <- 3
+
+c1 <- c(1) # used in column 1
+c2 <- c(3) # used in column 2
+c3 <- c(2) # used in column 3
+
+## The Rest
 
 column_vertices <- paste0("c", 1:l_order)
 symbol_vertices <- paste0("s", 1:l_order)
 
 l_nodes <- data.frame(name = c(column_vertices, symbol_vertices),
                       type = c(rep(TRUE, 3), rep(FALSE, 3)))
-
-c1 <- c(1) # used in column 1
-c2 <- c(3) # used in column 2
-c3 <- c(2) # used in column 3
 
 all_symbols <- 1:3
 
@@ -51,6 +55,33 @@ matching_names <- match(m$matching, names(m$matching))
 
 # add a matching indicator to the edges
 bgc <- bg %>%
+  activate(edges) %>%
+  mutate(
+    matching = to == matching_names[from]
+  )
+
+# just the matching itself, as a graph
+mg <- bgc %>%
+  activate(edges) %>%
+  filter(matching)
+
+# just the edges of the matching
+EE <- ends(mg, E(mg))
+
+# the new row
+as.numeric(gsub("s", "", EE[,2]))
+
+# remove edges of matching
+bg2 <- bgc %>%
+  activate(edges) %>%
+  filter(!matching)
+
+# get fresh maximum matching
+m2 <- max_bipartite_match(bg2)
+
+matching_names <- match(m2$matching, names(m2$matching))
+
+bgc <- bg2 %>%
   activate(edges) %>%
   mutate(
     matching = to == matching_names[from]
