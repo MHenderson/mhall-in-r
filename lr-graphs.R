@@ -1,5 +1,6 @@
-library(dplyr)
+library(igraph)
 library(tidygraph)
+library(tidyverse)
 
 # Here we attempt to construct the bipartite graph
 # corresponding to the following latin rectangle
@@ -14,9 +15,11 @@ library(tidygraph)
 
 l_order <- 3
 
-c1 <- c(1) # used in column 1
-c2 <- c(3) # used in column 2
-c3 <- c(2) # used in column 3
+L <- data.frame(row = c(1, 1, 1), column = c(1, 2, 3), symbol = c(1, 3, 2))
+
+c1 <- L %>% filter(row == 1, column == 1) %>% pull(symbol)
+c2 <- L %>% filter(row == 1, column == 2) %>% pull(symbol)
+c3 <- L %>% filter(row == 1, column == 3) %>% pull(symbol)
 
 ## The Rest
 
@@ -68,8 +71,15 @@ mg <- bgc %>%
 # just the edges of the matching
 EE <- ends(mg, E(mg))
 
-# the new row
-as.numeric(gsub("s", "", EE[,2]))
+# Add new row to L
+L <- L %>%
+  bind_rows(
+    tibble(
+      row = c(2, 2, 2),
+      column = 1:3,
+      symbol = as.numeric(gsub("s", "", EE[,2]))
+    )
+  )
 
 # remove edges of matching
 bg2 <- bgc %>%
@@ -95,5 +105,12 @@ mg <- bgc %>%
 # just the edges of the matching
 EE <- ends(mg, E(mg))
 
-# the new row
-as.numeric(gsub("s", "", EE[,2]))
+# Add new row to L
+L <- L %>%
+  bind_rows(
+    tibble(
+      row = c(3, 3, 3),
+      column = 1:3,
+      symbol = as.numeric(gsub("s", "", EE[,2]))
+    )
+  )
