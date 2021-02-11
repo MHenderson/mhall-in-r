@@ -21,21 +21,21 @@ embedding <- function(R) {
     matching_names <- match(m$matching, names(m$matching))
 
     # add a matching indicator to the edges
-    bgc <- bg %>%
+    bg <- bg %>%
       activate(edges) %>%
       mutate(
         matching = to == matching_names[from]
       )
 
     # just the matching itself, as a graph
-    mg <- bgc %>%
+    mg <- bg %>%
       activate(edges) %>%
       filter(matching)
 
     # just the edges of the matching
     EE <- ends(mg, E(mg))
 
-    # Add new row to L
+    # Add new row to R
     R <- R %>%
       bind_rows(
         tibble(
@@ -46,7 +46,7 @@ embedding <- function(R) {
       )
 
     # remove edges of matching
-    bg2 <- bgc %>%
+    bg <- bg %>%
       activate(edges) %>%
       filter(!matching)
   }
