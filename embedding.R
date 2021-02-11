@@ -3,6 +3,7 @@ library(igraph)
 library(tidygraph)
 library(tidyverse)
 
+source(here("R", "edge_tbl.R"))
 source(here("R", "embedding.R"))
 source(here("R", "to_tidygraph.R"))
 

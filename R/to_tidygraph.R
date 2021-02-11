@@ -14,34 +14,19 @@ to_tidygraph <- function(R) {
 
   l_order <- 3
 
-  c1 <- R %>% filter(row == 1, column == 1) %>% pull(symbol)
-  c2 <- R %>% filter(row == 1, column == 2) %>% pull(symbol)
-  c3 <- R %>% filter(row == 1, column == 3) %>% pull(symbol)
-
+  ## VERTEX DATA FRAME
   column_vertices <- paste0("c", 1:l_order)
   symbol_vertices <- paste0("s", 1:l_order)
 
-  l_nodes <- data.frame(name = c(column_vertices, symbol_vertices),
-                        type = c(rep(TRUE, 3), rep(FALSE, 3)))
+  l_nodes <- tibble(
+    name = c(column_vertices, symbol_vertices),
+    type = c(rep(TRUE, l_order), rep(FALSE, l_order))
+  )
 
-  all_symbols <- 1:3
+  ## EDGE DATA FRAME
+  f <- function(i) return(edge_tbl(R, i))
 
-  c1_df <- data.frame(
-    to = paste0("s", setdiff(all_symbols, c1))
-  ) %>%
-    mutate(from = "c1")
-
-  c2_df <- data.frame(
-    to = paste0("s", setdiff(all_symbols, c2))
-  ) %>%
-    mutate(from = "c2")
-
-  c3_df <- data.frame(
-    to = paste0("s", setdiff(all_symbols, c3))
-  ) %>%
-    mutate(from = "c3")
-
-  l_edges <- bind_rows(c1_df, c2_df, c3_df)
+  l_edges <- map_df(1:l_order, f)
 
   tbl_graph(nodes = l_nodes, edges = l_edges)
 }
