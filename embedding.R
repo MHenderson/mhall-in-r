@@ -19,11 +19,12 @@ embedding(r)
 r <- tibble(
   row    = c(rep(1, 4), rep(2, 4)),
   column = rep(1:4, 2),
-  symbol = c(1, 2, 3, 4, 2, 3, 4, 1)
+  symbol = c(1, 2, 3, 4, 2, 3, 4, 1),
+  stage = 0
 )
 
 ggplot(r, aes(column, row)) +
-  geom_tile(fill = "white") +
+  geom_tile(aes(fill = stage)) +
   geom_text(aes(label = symbol), size = 10, colour = "black") +
   geom_segment(data = vertical_lines(4), aes(x = x, y = y, xend = xend, yend = yend)) +
   geom_segment(data = horizontal_lines(4), aes(x = x, y = y, xend = xend, yend = yend)) +
@@ -37,7 +38,7 @@ ggplot(r, aes(column, row)) +
 L <- embedding(r, l_order = 4, rows = 3:4)
 
 ggplot(L, aes(column, row)) +
-  geom_tile(fill = "white") +
+  geom_tile(aes(fill = stage)) +
   geom_text(aes(label = symbol), size = 10, colour = "black") +
   geom_segment(data = vertical_lines(4), aes(x = x, y = y, xend = xend, yend = yend)) +
   geom_segment(data = horizontal_lines(4), aes(x = x, y = y, xend = xend, yend = yend)) +
@@ -47,5 +48,3 @@ ggplot(L, aes(column, row)) +
   theme(
     legend.position  = "none",
   )
-
-
