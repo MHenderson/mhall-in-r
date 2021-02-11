@@ -11,9 +11,9 @@
 #' @export
 #'
 #' @examples
-embedding <- function(R) {
-  bg <- to_tidygraph(R)
-  for (i in 2:3) {
+embedding <- function(R, l_order = 3, rows = 2:3) {
+  bg <- to_tidygraph(R, l_order)
+  for (i in rows) {
     # find a maximum matching
     m <- max_bipartite_match(bg)
 
@@ -39,8 +39,8 @@ embedding <- function(R) {
     R <- R %>%
       bind_rows(
         tibble(
-          row = c(i, i, i),
-          column = 1:3,
+          row = rep(i, l_order),
+          column = 1:l_order,
           symbol = as.numeric(gsub("s", "", EE[,2]))
         )
       )

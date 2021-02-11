@@ -1,18 +1,18 @@
-edge_tbl <- function(R, i) {
+edge_tbl <- function(R, i, l_order = 3) {
 
-  # symbols used in column 1
-  c1 <- R %>% filter(column == i) %>% pull(symbol)
+  all_symbols <- 1:l_order
 
-  all_symbols <- 1:3
+  # symbols used in column i
+  used <- R %>% filter(column == i) %>% pull(symbol)
 
-  # symbols missing from column 1
-  m1 <- setdiff(all_symbols, c1)
+  # symbols missing from column i
+  missing <- setdiff(all_symbols, used)
 
-  # edge data frame for column 1
-  c_df <- tibble(
-    to = paste0("s", m1)
+  # edge data frame for column i
+  edge_df <- tibble(
+    to = paste0("s", missing)
   ) %>%
     mutate(from = paste0("c", i))
 
-  return(c_df)
+  return(edge_df)
 }

@@ -10,9 +10,7 @@
 #' @export
 #'
 #' @examples
-to_tidygraph <- function(R) {
-
-  l_order <- 3
+to_tidygraph <- function(R, l_order = 3) {
 
   ## VERTEX DATA FRAME
   column_vertices <- paste0("c", 1:l_order)
@@ -24,7 +22,7 @@ to_tidygraph <- function(R) {
   )
 
   ## EDGE DATA FRAME
-  f <- function(i) return(edge_tbl(R, i))
+  f <- function(i) return(edge_tbl(R, i, l_order))
 
   l_edges <- map_df(1:l_order, f)
 
