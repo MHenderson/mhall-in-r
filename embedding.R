@@ -8,20 +8,14 @@ source(here("R", "embedding.R"))
 source(here("R", "plotting.R"))
 source(here("R", "to_tidygraph.R"))
 
-r <- tibble(
-  row    = c(1, 1, 1),
-  column = c(1, 2, 3),
-  symbol = c(1, 3, 2)
-)
+r <- expand_grid(row = 1, column = 1:3) %>%
+  mutate(symbol = c(1, 3, 2))
 
 embedding(r)
 
-r <- tibble(
-  row    = c(rep(1, 4), rep(2, 4)),
-  column = rep(1:4, 2),
-  symbol = c(1, 2, 3, 4, 2, 3, 4, 1),
-  stage = 0
-)
+r <- expand_grid(row = 1:2, column = 1:4) %>%
+  mutate(symbol = c(1, 2, 3, 4, 2, 3, 4, 1)) %>%
+  mutate(stage = 0)
 
 ggplot(r, aes(column, row)) +
   geom_tile(aes(fill = stage)) +
