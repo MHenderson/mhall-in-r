@@ -5,7 +5,13 @@
 #' a latin square in the same format which contains
 #' the given latin rectangle in the first rows.
 #'
-#' @param R
+#' Use can optionally provide a vector of row indices.
+#' Only those rows will be filled if that optional
+#' vector is provided.
+#'
+#' @param R latin rectangle
+#' @param l_order size of latin square to embed into
+#' @param rows empty rows to be filled
 #'
 #' @return
 #' @export

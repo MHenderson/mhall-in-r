@@ -1,8 +1,10 @@
-#' Convert a partial latin rectangle to tidygraph format
+#' Symbols missing from columns bipartite graph
 #'
 #' Input is a latin rectangle as a data frame with
 #' variables for row, column and symbol. Output is
-#' a tidygraph representing the same latin rectangle.
+#' a tidygraph representing the bipartite graph with
+#' vertices for columns and symbols and edges representing
+#' symbols missing from columns.
 #'
 #' @param R
 #'
