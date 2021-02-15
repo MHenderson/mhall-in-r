@@ -10,14 +10,17 @@
 #' vector is provided.
 #'
 #' @param R latin rectangle
-#' @param l_order size of latin square to embed into
 #' @param rows empty rows to be filled
 #'
 #' @return
 #' @export
 #'
 #' @examples
-embedding <- function(R, l_order = 3, rows = 2:l_order) {
+add_rows <- function(R, rows) {
+
+  # we assume that the dimension equals
+  # the number of columns
+  l_order <- length(unique(R$column))
 
   for (i in rows) {
 
