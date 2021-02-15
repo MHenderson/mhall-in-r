@@ -5,6 +5,7 @@ library(tidyverse)
 
 source(here("R", "embedding.R"))
 source(here("R", "edge_tbl.R"))
+source(here("R", "max_matching.R"))
 source(here("R", "plotting.R"))
 source(here("R", "to_tidygraph.R"))
 
@@ -14,7 +15,7 @@ first_row <- 1:l_order
 
 expand_grid(row = 1:1, column = 1:l_order) %>%
   mutate(symbol = first_row) %>%
-  embedding(l_order = l_order, rows = 2:l_order) %>%
+  embedding(l_order = l_order) %>%
   ggplot(aes(column, row)) +
   geom_tile(aes(fill = symbol)) +
   geom_text(aes(label = symbol), size = 5, colour = "white") +
