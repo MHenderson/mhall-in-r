@@ -3,8 +3,7 @@ library(igraph)
 library(tidygraph)
 library(tidyverse)
 
-source(here("R", "create_latin_square.R"))
-source(here("R", "embedding.R"))
+source(here("R", "add_rows.R"))
 source(here("R", "edge_tbl.R"))
 source(here("R", "next_row.R"))
 source(here("R", "to_tidygraph.R"))
@@ -15,7 +14,7 @@ first_row <- 1:l_order
 
 expand_grid(row = 1:1, column = 1:l_order) %>%
   mutate(symbol = first_row) %>%
-  embedding(l_order = l_order, rows = 2:l_order) %>%
+  add_rows(rows = 2:l_order) %>%
   ggplot(aes(column, row)) +
   geom_tile(aes(fill = symbol)) +
   scale_y_reverse() +
