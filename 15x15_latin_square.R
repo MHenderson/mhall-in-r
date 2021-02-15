@@ -5,7 +5,7 @@ library(tidyverse)
 
 source(here("R", "embedding.R"))
 source(here("R", "edge_tbl.R"))
-source(here("R", "max_matching.R"))
+source(here("R", "next_row.R"))
 source(here("R", "plotting.R"))
 source(here("R", "to_tidygraph.R"))
 

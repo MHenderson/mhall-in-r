@@ -7,7 +7,7 @@ library(tidyverse)
 source(here("R", "create_latin_square.R"))
 source(here("R", "embedding.R"))
 source(here("R", "edge_tbl.R"))
-source(here("R", "max_matching.R"))
+source(here("R", "next_row.R"))
 source(here("R", "to_tidygraph.R"))
 
 l_order <- 495

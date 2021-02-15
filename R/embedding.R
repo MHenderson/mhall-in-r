@@ -19,28 +19,18 @@
 #' @examples
 embedding <- function(R, l_order = 3, rows = 2:l_order) {
 
-  bg <- to_tidygraph(R, l_order)
-
   for (i in rows) {
 
-    MM <- max_matching(bg)
-
-    # just the edges of the matching
-    EE <- ends(MM$mg, E(MM$mg))
-
-    # Add new row to R
     R <- R %>%
       bind_rows(
         tibble(
           row = rep(i, l_order),
           column = 1:l_order,
-          symbol = as.numeric(gsub("s", "", EE[,2]))
+          symbol = next_row(R, l_order)
         )
       )
 
-    # update bipartite graph with matching edges removed
-    bg <- MM$bg
-
   }
+
   return(R)
 }
