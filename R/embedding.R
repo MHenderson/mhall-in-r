@@ -17,29 +17,16 @@
 #' @export
 #'
 #' @examples
-embedding <- function(R, l_order = 3, rows = 2:3) {
+embedding <- function(R, l_order = 3, rows = 2:l_order) {
+
   bg <- to_tidygraph(R, l_order)
+
   for (i in rows) {
-    # find a maximum matching
-    m <- max_bipartite_match(bg)
 
-    # names of edges in the matching
-    matching_names <- match(m$matching, names(m$matching))
-
-    # add a matching indicator to the edges
-    bg <- bg %>%
-      activate(edges) %>%
-      mutate(
-        matching = to == matching_names[from]
-      )
-
-    # just the matching itself, as a graph
-    mg <- bg %>%
-      activate(edges) %>%
-      filter(matching)
+    MM <- max_matching(bg)
 
     # just the edges of the matching
-    EE <- ends(mg, E(mg))
+    EE <- ends(MM$mg, E(MM$mg))
 
     # Add new row to R
     R <- R %>%
@@ -51,10 +38,9 @@ embedding <- function(R, l_order = 3, rows = 2:3) {
         )
       )
 
-    # remove edges of matching
-    bg <- bg %>%
-      activate(edges) %>%
-      filter(!matching)
+    # update bipartite graph with matching edges removed
+    bg <- MM$bg
+
   }
   return(R)
 }
