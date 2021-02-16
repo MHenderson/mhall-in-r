@@ -25,4 +25,4 @@ expand_grid(row = 1:1, column = 1:l_order) %>%
   ) +
   scale_fill_viridis_c(option = "magma")
 
-ggsave(file = "80x80_latin_square.png", width = 12, height = 12)
+ggsave(file = "80x80_latin_square.png", width = 8, height = 8)

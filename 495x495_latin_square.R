@@ -26,4 +26,4 @@ expand_grid(row = 1:1, column = 1:l_order) %>%
   ) +
   scale_fill_scico(palette = 'davos')
 
-ggsave(file = "495x495_latin_square.png", width = 12, height = 12)
+ggsave(file = "495x495_latin_square.png", width = 8, height = 8)
