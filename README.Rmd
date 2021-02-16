@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   fig.width = 8
 )
+
+library(igraph)
+library(tidygraph)
+
+source("R/add_rows.R")
+source("R/edge_tbl.R")
+source("R/next_row.R")
+source("R/to_tidygraph.R")
 ```
 
 
@@ -101,14 +109,6 @@ as input and output an embedding of the latin rectangle
 in a latin square.
 
 ```{r using_add_rows}
-library(igraph)
-library(tidygraph)
-
-source("R/add_rows.R")
-source("R/edge_tbl.R")
-source("R/next_row.R")
-source("R/to_tidygraph.R")
-
 expand_grid(row = 1:2, column = 1:3) %>%
   mutate(symbol = c(1, 2, 3, 2, 3, 1)) %>%
   add_rows(3:3)
@@ -162,7 +162,7 @@ expand_grid(row = 1:1, column = 1:12) %>%
 
 See `15x15_latin_square.R`
 
-```{r example_15, eval=FALSE,code=read_lines('15x15_latin_square.R', skip = 11)}
+```{r example_15, eval=FALSE,code=read_lines('15x15_latin_square.R', skip = 10)}
 
 ```
 
@@ -172,7 +172,7 @@ See `15x15_latin_square.R`
 
 See `80x80_latin_square.R`
 
-```{r example_80, eval=FALSE,code=read_lines('80x80_latin_square.R', skip = 11)}
+```{r example_80, eval=FALSE,code=read_lines('80x80_latin_square.R', skip = 10)}
 
 ```
 
@@ -182,7 +182,7 @@ See `80x80_latin_square.R`
 
 See `495x495_latin_square.R`
 
-```{r example_495, eval=FALSE,code=read_lines('495x495_latin_square.R', skip = 11)}
+```{r example_495, eval=FALSE,code=read_lines('495x495_latin_square.R', skip = 10)}
 
 ```
 
@@ -224,7 +224,7 @@ array data frame format. Output is a `tbl_graph` from
 the `tidygraph` package representing the bipartite
 graph described in the previous section.
 
-```{r, fig.height=2}
+```{r bipartite_graph, fig.height=2}
 library(ggraph)
 
 expand_grid(row = 1:1, column = 1:12) %>%

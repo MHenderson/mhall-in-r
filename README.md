@@ -98,14 +98,6 @@ The `add_rows` function can take a data frame like this as input and
 output an embedding of the latin rectangle in a latin square.
 
 ``` r
-library(igraph)
-library(tidygraph)
-
-source("R/add_rows.R")
-source("R/edge_tbl.R")
-source("R/next_row.R")
-source("R/to_tidygraph.R")
-
 expand_grid(row = 1:2, column = 1:3) %>%
   mutate(symbol = c(1, 2, 3, 2, 3, 1)) %>%
   add_rows(3:3)
@@ -186,8 +178,6 @@ expand_grid(row = 1:1, column = 1:l_order) %>%
   ggplot(aes(column, row)) +
   geom_tile(aes(fill = symbol)) +
   geom_text(aes(label = symbol), size = 5, colour = "white") +
-  geom_segment(data = vertical_lines(l_order), aes(x = x, y = y, xend = xend, yend = yend)) +
-  geom_segment(data = horizontal_lines(l_order), aes(x = x, y = y, xend = xend, yend = yend)) +
   scale_y_reverse() +
   coord_fixed() +
   theme_void() +
@@ -195,7 +185,7 @@ expand_grid(row = 1:1, column = 1:l_order) %>%
     legend.position  = "none",
   )
 
-ggsave(file = "15x15_latin_square.png", width = 12, height = 12)
+ggsave(file = "15x15_latin_square.png", width = 8, height = 8)
 ```
 
 ![](15x15_latin_square.png)
@@ -205,6 +195,7 @@ ggsave(file = "15x15_latin_square.png", width = 12, height = 12)
 See `80x80_latin_square.R`
 
 ``` r
+l_order <- 80
 
 first_row <- 1:l_order
 
@@ -221,7 +212,7 @@ expand_grid(row = 1:1, column = 1:l_order) %>%
   ) +
   scale_fill_viridis_c(option = "magma")
 
-ggsave(file = "80x80_latin_square.png", width = 12, height = 12)
+ggsave(file = "80x80_latin_square.png", width = 8, height = 8)
 ```
 
 ![](80x80_latin_square.png)
@@ -231,6 +222,7 @@ ggsave(file = "80x80_latin_square.png", width = 12, height = 12)
 See `495x495_latin_square.R`
 
 ``` r
+
 l_order <- 495
 
 first_row <- 1:l_order
@@ -248,7 +240,7 @@ expand_grid(row = 1:1, column = 1:l_order) %>%
   ) +
   scale_fill_scico(palette = 'davos')
 
-ggsave(file = "495x495_latin_square.png", width = 12, height = 12)
+ggsave(file = "495x495_latin_square.png", width = 8, height = 8)
 ```
 
 ![](495x495_latin_square.png)
@@ -298,4 +290,4 @@ expand_grid(row = 1:1, column = 1:12) %>%
   theme_void()
 ```
 
-![](figure/unnamed-chunk-1-1.png)<!-- -->
+![](figure/bipartite_graph-1.png)<!-- -->
