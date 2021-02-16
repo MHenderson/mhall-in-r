@@ -5,43 +5,38 @@ Matthew Henderson
 
 ## Introduction
 
-This repository contains code for generating latin squares based on the
-theorem of Marshall Hall Jr. (1945) which states:
+This repository contains code for generating latin squares based on a
+theorem of Marshall Hall Jr. (Hall 1945) which states:
+
+### Theorem 1
 
 > Given a rectangle of n - r rows and n columns such that each of the
 > numbers 1, 2, …, n occurs in every row and no number occurs twice in
 > any column, then there exist r rows which may be added to the given
 > rectangle to form a latin square.
 
-In `R/add_rows.R` the function `add_rows` is implemented which takes as
-input a latin rectangle (represented by a data frame) and outputs a new
-latin rectangle with additional rows (how many rows is also specified as
-input).
+In `R/add_rows.R` the function `add_rows` takes as input a latin
+rectangle (represented by a data frame) and outputs a new data frame
+representing a latin rectangle with additional rows.
 
-In this report we describe how `add_rows` function works and demonstrate
-some of the generated outputs.
+In this report we describe how `add_rows` works and present some
+generated outputs.
 
-## Data frame representations of latin rectangles
+## Representing latin rectangles as data frames
 
-A latin rectangle can be represented by an orthogonal array and an
-orthogonal array looks just like a data frame with variables for `row`,
-`column`, and `symbol`.
-
-(not quite right. an OA can only represent a complete latin square)
+A latin rectangle can be represented by a data frame with variables
+`row`, `column`, and `symbol`.
 
 For example, the latin rectangle
 
-    1 2 3
-    2 3 1
+![](figure/first_example-1.png)<!-- -->
 
-can be represented by the orthgonal array data frame
+can be represented by the data frame:
 
 ``` r
-library(tidyverse)
-
 tibble(
-  row = c(rep(1, 3), rep(2, 3)),
-  col = rep(1:3, 2),
+     row = c(rep(1, 3), rep(2, 3)),
+     col = rep(1:3, 2),
   symbol = c(1, 2, 3, 2, 3, 1)
 )
 #> # A tibble: 6 x 3
@@ -55,8 +50,8 @@ tibble(
 #> 6     2     3      1
 ```
 
-The `expand_grid` function makes it easier to construct such a data
-frame from a vector of entries.
+`expand_grid` makes it even easier to construct such a data frame from a
+vector representing the symbols.
 
 ``` r
 expand_grid(row = 1:2, column = 1:3) %>%
@@ -72,8 +67,8 @@ expand_grid(row = 1:2, column = 1:3) %>%
 #> 6     2      3      1
 ```
 
-A benefit this representation is that it makes it easy to use the
-tidyverse packages. For example, we can plot the latin square using
+One benefit of this representation is that it makes it easy to use
+tidyverse packages. For example, we can plot latin rectangles with
 `ggplot2`.
 
 ``` r
@@ -94,8 +89,15 @@ expand_grid(row = 1:2, column = 1:3) %>%
 
 ## Extending latin rectangles
 
-The `add_rows` function can take a data frame like this as input and
-output an embedding of the latin rectangle in a latin square.
+`add_rows` has two arguments. The first is a data frame representing a
+latin rectangle, the second is a vector of row indices.
+
+The output of `add_rows` is a new data frame representing a latin
+rectangle obtained from the input latin rectangle by adding new rows
+corresponding to the given row indices.
+
+So, for example, to add a third row to the latin rectangle given in the
+previous section we call `add_rows` with indices `c(3)` (or `3:3`).
 
 ``` r
 expand_grid(row = 1:2, column = 1:3) %>%
@@ -115,11 +117,12 @@ expand_grid(row = 1:2, column = 1:3) %>%
 #> 9     3      3      2
 ```
 
-We can extend and plot all in one pipeline.
+Extending a 2 x 4 latin rectangle to a 3 x 4 latin rectangle, for
+example, and plotting the resulting output:
 
 ``` r
-expand_grid(row = 1:2, column = 1:3) %>%
-  mutate(symbol = c(1, 2, 3, 2, 3, 1)) %>%
+expand_grid(row = 1:2, column = 1:4) %>%
+  mutate(symbol = c(1, 2, 3, 4, 2, 3, 4, 1)) %>%
   add_rows(3:3) %>%
   ggplot(aes(column, row)) +
   geom_tile(aes(fill = symbol)) +
@@ -134,15 +137,40 @@ expand_grid(row = 1:2, column = 1:3) %>%
 
 ![](figure/extend_and_plot_pipeline-1.png)<!-- -->
 
+To complete a latin rectangle to a latin square we just have to specify
+n - r rows to be added, where r is the order of the original latin
+rectangle.
+
+``` r
+expand_grid(row = 1:2, column = 1:4) %>%
+  mutate(symbol = c(1, 2, 3, 4, 2, 3, 4, 1)) %>%
+  add_rows(3:4) %>%
+  ggplot(aes(column, row)) +
+  geom_tile(aes(fill = symbol)) +
+  geom_text(aes(label = symbol), colour = "white") +
+  scale_y_reverse() +
+  coord_fixed() +
+  theme_void() +
+  theme(
+    legend.position  = "none",
+  )
+```
+
+![](figure/completing-1.png)<!-- -->
+
 ## Existence of latin squares
 
-It was understood early on that Marshall Hall Jr.’s theorem provides an
-existence proof for latin squares. We can always construct a 1 x n latin
-rectangle (it’s just a permutation of 1, …, n). By Marhsall Hall Jr’s
-theorem such a latin rectangle can always be completed to a latin
-square, therefore a latin square of order n exists.
+Theorem 1 is an existence proof for latin squares. A 1 x n latin square
+is just a permutation of 1, …, n and therefore exists for all n. Theorem
+1 ensures that the 1 x n latin rectangle can be extended to an n x n
+latin square. Therefore latin squares exist for all n.
 
-For example, to construct a latin square of order 12.
+For example, to construct a latin square of order 12, start with the
+latin rectangle
+
+![](figure/first_row-1.png)<!-- -->
+
+and use `add_rows` to add eleven more rows.
 
 ``` r
 expand_grid(row = 1:1, column = 1:12) %>%
@@ -162,6 +190,11 @@ expand_grid(row = 1:1, column = 1:12) %>%
 ![](figure/existence_plot-1.png)<!-- -->
 
 ## Examples
+
+There are three scripts in this repository for generating PNG images of
+latin squares constructed by the method described above. The resulting
+images are surprising in some cases for the regularity they display and
+in cases surprising for their disorder.
 
 ### Latin square of order 15
 
@@ -291,3 +324,17 @@ expand_grid(row = 1:1, column = 1:12) %>%
 ```
 
 ![](figure/bipartite_graph-1.png)<!-- -->
+
+## References
+
+<div id="refs" class="references">
+
+<div id="ref-hallExistenceTheoremLatin1945">
+
+Hall, Marshall. 1945. “An Existence Theorem for Latin Squares.”
+*Bulletin of the American Mathematical Society* 51 (Number 6, Part 1):
+387–88. <https://projecteuclid.org/euclid.bams/1183506980>.
+
+</div>
+
+</div>
