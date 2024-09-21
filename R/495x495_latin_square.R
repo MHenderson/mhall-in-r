@@ -3,8 +3,6 @@ library(here)
 library(keedwell)
 library(scico)
 
-source(here("R", "first-row-natural.R"))
-
 l_order <- 495
 
 L <- first_row_natural(l_order) |>
