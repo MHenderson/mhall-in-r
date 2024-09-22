@@ -246,7 +246,7 @@
     },
     "keedwell": {
       "Package": "keedwell",
-      "Version": "0.1.1",
+      "Version": "0.2.0",
       "Source": "Repository",
       "Repository": "https://mhenderson.r-universe.dev",
       "Requirements": [
@@ -257,7 +257,7 @@
         "tidygraph",
         "tidyr"
       ],
-      "Hash": "0ab7d94f0e9c2abe30a90ac0bcbcbe97"
+      "Hash": "cd6afdebabd61ef99a8a42206b37cbc9"
     },
     "labeling": {
       "Package": "labeling",

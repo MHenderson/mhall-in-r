@@ -2,8 +2,6 @@ library(ggplot2)
 library(here)
 library(keedwell)
 
-source(here("R", "first-row-natural.R"))
-
 l_order <- 80
 
 L <- first_row_natural(l_order) |>
